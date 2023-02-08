@@ -58,7 +58,7 @@ A `model` folder has been added to this repository. You can add and subtract mod
 
 ## Some common issues
 
-If you use this inside a VM, such as Debian 11 in VirtualBox, some of the audio settings for a USB microphone are not set correctly. When you select `Devices -> USB microphone` and test in audacity, things seem fine but you will need to install two more packages to make it work correctly
+If you use this inside a VM, such as Debian 11 in VirtualBox, some of the audio settings for a USB microphone are not set correctly. When you select `Devices -> USB microphone` and test in audacity, things seem fine but you will need to install one more package to make it work correctly
 ```
 sudo apt install osspd
 ```
