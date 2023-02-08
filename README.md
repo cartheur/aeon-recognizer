@@ -5,7 +5,7 @@ This project is a complete solution to having an emotional toy recognize a speak
 ## Install prerequisites
 
 ```
-     sudo apt install gcc automake autoconf libtool bison swig audacity libasound2-dev python-dev
+     sudo apt install gcc automake autoconf libtool bison swig audacity libasound2-dev python-dev mplayer pulseaudio libpulse-dev
 ```
 Leave the folder arrangment as it is set in this repository. It will make the build and install process easier.
 
@@ -55,3 +55,10 @@ pocketsphinx_continuous \
     -inmic yes
 ```
 A `model` folder has been added to this repository. You can add and subtract models to change the consistency of the application. Further things you can do with the application can be found on the man page: https://www.mankier.com/1/pocketsphinx_continuous
+
+## Some common issues
+
+If you use this inside a VM, such as Debian 11 in VirtualBox, some of the audio settings for a USB microphone are not set correctly. When you select `Devices -> USB microphone` and test in audacity, things seem fine but you will need to install two more packages to make it work correctly
+```
+sudo apt install osspd
+```
