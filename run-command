@@ -1,0 +1,5 @@
+pocketsphinx_continuous \
+    -hmm /usr/share/pocketsphinx/model/en-us/en-us \
+    -dict /usr/share/pocketsphinx/model/en-us/cmudict-en-us.dict \
+    -lm /usr/share/pocketsphinx/model/en-us/en-us.lm.bin \
+    -inmic yes
