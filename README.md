@@ -1,3 +1,57 @@
 # voice-recognizer
 
-This project is a complete solution to having an emotional toy recognize a speaker and process their emotion via the recognition process.
+This project is a complete solution to having an emotional toy recognize a speaker and process their emotion via the recognition process. In order to use this software, you will need to build it from source. Before that, you will need to install some prerequisites some of which you may or may not have. The following instructions are for a Debian Linux system.
+
+## Install prerequisites
+
+```
+     sudo apt install gcc automake autoconf libtool bison swig audacity libasound2-dev python-dev
+```
+Leave the folder arrangment as it is set in this repository. It will make the build and install process easier.
+
+## Building the sources
+
+* Build sphinxbase
+
+Note that only use `sudo` for installations, NOT for the building of the software. To begin, step into to the sphinxbase folder and run the `autogen.sh` file:
+		
+```
+    cd sphinxbase
+    ./autogen.sh
+```
+Once completed and no errors are reported, run `make` and `make install` (this requires `sudo`)
+
+```
+	make
+	sudo make install
+```	
+Check the installation by running the command `sphinx_lm_convert`. You may experience an error that sphinxbase cannot be found. If so, add path to the location where sphinxbase is installed `sudo nano /etc/ld.so.conf` and add new line `/usr/local/lib`. Refresh the configuration by using `sudo ldconfig`. Finally, then retest the installation `sphinx_lm_convert`. You will receive a message that it is missing arguments. This is the correct behavior at this stage.
+
+* Build pocketsphinx
+
+To begin, step into to the pocketsphinx folder and run the `autogen.sh` file:
+		
+```
+    cd pocketsphinx
+    ./autogen.sh
+```
+Once completed and no errors are reported, run `make` and `make install` (this requires `sudo`)
+
+```
+	make
+	sudo make install
+```	
+Check the installation by running the command `pocketsphinx_continuous`. You may experience an error that `pocketsphinx_continuous` cannot be found. Since the path was already added in the previous step, just refresh the configuration `sudo ldconfig`. Finally, then retest the installation `pocketsphinx_continuous`. You will receive a message that it is missing arguments. This is the correct behavior.
+
+## Using the recongizer
+
+Typically the install process will posit the correct model files required to run the application. All that is needed is to run the application, for example, to STDOUT to the terminal a microphone input
+
+```
+pocketsphinx_continuous \
+    -hmm /usr/share/pocketsphinx/model/en-us/en-us \
+    -dict /usr/share/pocketsphinx/model/en-us/cmudict-en-us.dict \
+    -lm /usr/share/pocketsphinx/model/en-us/en-us.lm.bin \
+    -inmic yes
+```
+A `model` folder has been added to this repository. You can add and subtract models to change the consistency of the application. Further things you can do with the application can be found on the man page: https://www.mankier.com/1/pocketsphinx_continuous
