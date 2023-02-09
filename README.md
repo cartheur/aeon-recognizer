@@ -1,4 +1,4 @@
-# voice-recognizer
+# Cartheur's Voice Recognizer for its animals products
 
 This project is a complete solution to having an emotional toy recognize a speaker and process their emotion via the recognition process. In order to use this software, you will need to build it from source. Before that, you will need to install some prerequisites some of which you may or may not have. The following instructions are for a Debian Linux system.
 
@@ -72,3 +72,9 @@ If you use this inside a VM, such as Debian 11 in VirtualBox, some of the audio 
 ```
 sudo apt install osspd
 ```
+
+## Improving the performance of the recongizer
+
+Have added sphinxtrain to the repository. Documentation is found here: https://cmusphinx.github.io/wiki/tutorialam/
+
+*Coming soon.*
