@@ -8,4 +8,17 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="RabbitMQ.Client" Version="6.4.0" />
+    <PackageReference Include="System.Speech" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="grammar\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Aeon.Library\Aeon.Library.csproj" />
+  </ItemGroup>
+
 </Project>
