@@ -1,17 +1,17 @@
 [![GitHub issues](https://img.shields.io/github/issues/cartheur/voice-recognizer)](https://github.com/cartheur/voice-recognizer/issues)
 
-# A multitonality voice-recognizer for _aeon_ embidied as _david_
+## A multitonality voice-recognizer for _aeon_ embidied as _david_
 
 This project is a complete solution to having an emotional toy recognize a speaker and process their emotion via the recognition process. In order to use this software, you will need to build it from source. Before that, you will need to install some prerequisites some of which you may or may not have. The following instructions are for a Debian Linux system.
 
-## Install prerequisites
+### Install prerequisites
 
 ```
      sudo apt install gcc automake autoconf libtool bison swig audacity libasound2-dev python-dev mplayer pulseaudio libpulse-dev
 ```
 Leave the folder arrangment as it is set in this repository. It will make the build and install process easier.
 
-## Building the sources
+### Building the sources
 
 * Build sphinxbase
 
@@ -68,14 +68,14 @@ pocketsphinx_continuous \
 
 And the text will be output at the terminal. There is also the option to redirect STDOUT to a file. Further information on what you can do with the application can be found on this man page: https://www.mankier.com/1/pocketsphinx_continuous
 
-## Some common issues
+### Some common issues
 
 If you use this inside a VM, such as Debian 11 in VirtualBox, some of the audio settings for a USB microphone are not set correctly. When you select `Devices -> USB microphone` and test in audacity, things seem fine but you will need to install one more package to make it work correctly
 ```
 sudo apt install osspd
 ```
 
-## Improving the performance of the recongizer
+### Improving the performance of the recongizer
 
 Have added sphinxtrain to the repository. Documentation is found here: https://cmusphinx.github.io/wiki/tutorialam/
 
