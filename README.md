@@ -1,4 +1,4 @@
-# Cartheur's Voice Recognizer for its animals products
+# Voice Recognizer for aeon
 
 This project is a complete solution to having an emotional toy recognize a speaker and process their emotion via the recognition process. In order to use this software, you will need to build it from source. Before that, you will need to install some prerequisites some of which you may or may not have. The following instructions are for a Debian Linux system.
 
