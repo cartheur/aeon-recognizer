@@ -1,8 +1,8 @@
 //
 // Those parts of the recognizer belonging to the aeon AGI are the intellectual property of Dr. Christopher A. Tucker. Copyright 2023, all rights reserved. No rights are explicitly granted to persons who have obtained this source code.
 //
-#define Linux
-//#define Windows
+//#define Linux
+#define Windows
 using Aeon.Library;
 using System.Diagnostics;
 using System.Speech.Recognition;
@@ -19,11 +19,14 @@ namespace Aeon.Recognizer
         public static string PythonLocation { get; set; }
         public static string UserInput { get; set; }
         public static string LastOutput { get; set; }
+        // Speech recognition and synthesizer engines.
+        public static bool SapiWindowsUsed { get; set; }
+        public static bool SpeechSynthesizerUsed { get; set; }
         // Speech recognizer and synthesizer.
-        static readonly SpeechRecognitionEngine Recognizer = new SpeechRecognitionEngine();
-        static readonly GrammarBuilder GrammarBuilder = new GrammarBuilder();
-        static readonly SpeechSynthesizer SpeechSynth = new SpeechSynthesizer();
-        static readonly PromptBuilder PromptBuilder = new PromptBuilder();
+        SpeechRecognitionEngine Recognizer { get; set; }
+        GrammarBuilder GrammarBuilder { get; set; }
+        SpeechSynthesizer SpeechSynth { get; set; }
+        PromptBuilder PromptBuilder { get; set; }
         // Pocketsphinx voice recognition system
         public static bool SphinxUsed { get; set; }
         public static bool PocketSphinxPythonUsed { get; set; }
@@ -32,46 +35,71 @@ namespace Aeon.Recognizer
         public static int PocketSphinxProcessExitCode { get; set; }
         public static string PocketsphinxFileDrop { get; set; }
         public static StreamReader PythonProcessStream { get; set; }
-    #if Linux
+#if Linux
         public static readonly string SphinxStartup = @"pocketsphinx_continuous -hmm /usr/share/pocketsphinx/model/hmm/en_US/en-us -dict /usr/share/pocketsphinx/model/lm/en_US/cmudict-en-us.dict -lm /usr/share/pocketsphinx/model/lm/en_US/en-us.lm.bin -inmic yes -backtrace yes -logfn /dev/null";
-    #endif
-    #if Windows
+#endif
+#if Windows
         public static readonly string SphinxStartup = @"pocketsphinx_continuous -hmm /usr/share/pocketsphinx/model/hmm/en_US/en-us -dict /usr/share/pocketsphinx/model/lm/en_US/cmudict-en-us.dict -lm /usr/share/pocketsphinx/model/lm/en_US/en-us.lm.bin -inmic yes -backtrace yes -logfn /dev/null";
-    #endif
+#endif
         // For RabbitMQ messaging on pocketsphinx output.
         public static ConnectionFactory Factory { get; set; }
         public static IModel Channel { get; private set; }
         public static EventingBasicConsumer Consumer { get; set; }
-        
+
         public MainForm()
         {
             InitializeComponent();
+            Configuration = new LoaderPaths("Debug");
+            Logging.ActiveConfiguration = Configuration.ActiveRuntime;
+            SpeechSynthesizerUsed = true; //Convert.ToBoolean(_thisAeon.GlobalSettings.GrabSetting("speechsynthesizerused"));
+
+#if Linux
             InitializePocketSphinx();
+#endif
+#if Windows
+            BuildWindowsSpeech();
+            InitializeSpeechRecognizer();
+#endif
         }
+
         #region Voice recognition as per the operating system
 
         #region Windows
+        private void BuildWindowsSpeech()
+        {
+            Recognizer = new SpeechRecognitionEngine()
+            {
+
+            };
+            GrammarBuilder = new GrammarBuilder()
+            {
+                Culture = Recognizer.RecognizerInfo.Culture
+            };
+
+            SpeechSynth = new SpeechSynthesizer();
+            PromptBuilder = new PromptBuilder();
+        }
         /// <summary>
-        /// Here is where the input to the robot is being received, in the laptop and not the robot.
+        /// Receive the output from SAPI.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="SpeechRecognizedEventArgs"/> instance containing the event data.</param>
-        private static void RecognizerSpeechRecognized(object sender, SpeechRecognizedEventArgs e)
+        private void RecognizerSpeechRecognized(object sender, SpeechRecognizedEventArgs e)
         {
-            // Here is where the logic of the hardware connects to the application. Removed user input textbox.
             UserInput = e.Result.Text;
-            ProcessInput();
+            //ProcessInput();
+            SpeakText("I heard you.");
+            WriteToConsole("The voice recognizer is working properly. You said: " + UserInput);
             Logging.WriteLog(LastOutput, Logging.LogType.Information, Logging.LogCaller.AeonRuntime);
         }
         /// <summary>
         /// Initializes the speech recognizer.
         /// </summary>
         /// <returns></returns>
-        public static bool InitializeSpeechRecognizer()
+        public bool InitializeSpeechRecognizer()
         {
             try
             {
-                // Read in the list of phrases that the speech engine will recognise when it detects it being spoken.
                 GrammarBuilder.Append(
                     new Choices(File.ReadAllLines(Path.Combine(Configuration.ActiveRuntime, "grammar", "valid-grammar.txt"))));
             }
@@ -80,13 +108,13 @@ namespace Aeon.Recognizer
                 Logging.WriteLog(ex.Message, Logging.LogType.Error, Logging.LogCaller.SpeechRecognizer);
                 return false;
             }
-            var gr = new Grammar(GrammarBuilder);
+            var builder = new Grammar(GrammarBuilder);
             try
             {
                 Recognizer.UnloadAllGrammars();
                 Recognizer.RecognizeAsyncCancel();
                 Recognizer.RequestRecognizerUpdate();
-                Recognizer.LoadGrammar(gr);
+                Recognizer.LoadGrammar(builder);
                 Recognizer.SpeechRecognized += RecognizerSpeechRecognized;
                 Recognizer.SetInputToDefaultAudioDevice();
                 Recognizer.RecognizeAsync(RecognizeMode.Multiple);
@@ -101,13 +129,13 @@ namespace Aeon.Recognizer
 
         #region Linux
         /// <summary>
-        /// Here is where the input to the robot is being received, in the laptop and not the robot.
+        /// Receive the output from PocketSphinx recognition.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="SpeechRecognizedEventArgs"/> instance containing the event data.</param>
-        private static void PocketSphinxSpeechRecognized(object sender, EventArgs e)
+        private void PocketSphinxSpeechRecognized(object sender, EventArgs e)
         {
-            // Here is where the logic of the hardware connects to the application. Removed user input textbox.
+            //Todo: Fix this recognizer.
             //UserInput = e.Result.Text;
             ProcessInput();
             Logging.WriteLog(LastOutput, Logging.LogType.Information, Logging.LogCaller.AeonRuntime);
@@ -125,7 +153,32 @@ namespace Aeon.Recognizer
 
         #endregion
 
-        public static bool ProcessInput(string returnFromProcess = "")
+        #region Speak the output
+        public void SpeakText(string input)
+        {
+            if (SpeechSynthesizerUsed)
+            {
+                try
+                {
+                    PromptBuilder.ClearContent();
+                    PromptBuilder.AppendText(input);
+                    SpeechSynth.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
+                    SpeechSynth.Speak(PromptBuilder);
+                }
+                catch (Exception ex)
+                {
+                    Logging.WriteLog(ex.Message, Logging.LogType.Error, Logging.LogCaller.AeonRuntime);
+                }
+            }
+            else
+            {
+                // Use epeak or the customized festival voices.
+                WriteToConsole("Linux voices not implemented.");
+            }
+        }
+        #endregion
+
+        public bool ProcessInput()
         {
             if (UserInput == null)
             {
@@ -159,7 +212,7 @@ namespace Aeon.Recognizer
             catch (Exception ex)
             {
                 Logging.WriteLog(ex.Message, Logging.LogType.Error, Logging.LogCaller.AeonRuntime);
-                System.Console.WriteLine("Pocketsphinx is not responding.");
+                WriteToConsole("Pocketsphinx is not responding.");
             }
             finally
             {
@@ -171,5 +224,20 @@ namespace Aeon.Recognizer
             }
             return true;
         }
+
+        void WriteToConsole(string message)
+        {
+            CommandWindow.Text += message;
+            CommandWindow.Text += Environment.NewLine;
+            CommandWindow.ScrollToCaret();
+        }
+
+        #region Events
+        private void CloseButtonClick(object sender, EventArgs e)
+        {
+            Close();
+        }
+        #endregion
+
     }
 }

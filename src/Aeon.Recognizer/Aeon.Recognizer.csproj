@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <Folder Include="grammar\" />
+    <Folder Include="logs\" />
   </ItemGroup>
 
   <ItemGroup>

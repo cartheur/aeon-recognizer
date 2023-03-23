@@ -28,12 +28,47 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Form1";
+            CloseButton = new Button();
+            CommandWindow = new RichTextBox();
+            SuspendLayout();
+            // 
+            // CloseButton
+            // 
+            CloseButton.Location = new Point(400, 294);
+            CloseButton.Name = "CloseButton";
+            CloseButton.Size = new Size(75, 23);
+            CloseButton.TabIndex = 0;
+            CloseButton.Text = "Close";
+            CloseButton.UseVisualStyleBackColor = true;
+            CloseButton.Click += CloseButtonClick;
+            // 
+            // CommandWindow
+            // 
+            CommandWindow.BackColor = SystemColors.InactiveBorder;
+            CommandWindow.Location = new Point(18, 30);
+            CommandWindow.Name = "CommandWindow";
+            CommandWindow.Size = new Size(445, 237);
+            CommandWindow.TabIndex = 2;
+            CommandWindow.Text = "";
+            // 
+            // MainForm
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(478, 326);
+            Controls.Add(CommandWindow);
+            Controls.Add(CloseButton);
+            MaximumSize = new Size(494, 365);
+            MinimizeBox = false;
+            MinimumSize = new Size(494, 365);
+            Name = "MainForm";
+            Text = "Voice Recognition Form";
+            ResumeLayout(false);
         }
 
         #endregion
+
+        private Button CloseButton;
+        private RichTextBox CommandWindow;
     }
 }
