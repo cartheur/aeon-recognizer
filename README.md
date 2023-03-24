@@ -15,7 +15,7 @@ Leave the folder arrangment as it is set in this repository. It will make the bu
 
 * Build sphinxbase
 
-Note that only use `sudo` for installations, NOT for the building of the software. To begin, step into to the sphinxbase folder and run the `autogen.sh` file:
+Note that only use `sudo` for installations, NOT for the building of the software. If you cloned from this repo, the file permissions might be incorrect. Navigate to the root folder and use `chmod -R 755 aeon-recognizer`. Next, step into to the sphinxbase folder and run the `autogen.sh` file:
 		
 ```
     cd sphinxbase
