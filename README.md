@@ -67,6 +67,10 @@ pocketsphinx_continuous \
 ```
 
 And the text will be output at the terminal. There is also the option to redirect STDOUT to a file. Further information on what you can do with the application can be found on this man page: https://www.mankier.com/1/pocketsphinx_continuous
+	
+### Using RabbitMQ to control the output of pocketsphinx recognition
+	
+When running the pocketsphinx application using the `-inmic` flag, it is not always convenient to use this uncontrolled in a recognizer application. Install RabbitMQ `apt install rabbitmq-server`.
 
 ### Some common issues
 
