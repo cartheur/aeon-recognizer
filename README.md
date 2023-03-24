@@ -47,7 +47,7 @@ Check the installation by running the command `pocketsphinx_continuous`. You may
 
 ## Using the recognizer
 
-Typically the install process will posit the correct model files required to run the application. All that is needed is to run the application, for example, to STDOUT to the terminal a microphone input
+The last step is to copy the folders in the `model` directory to where the application can find them in the folder system. All that is needed is to run the application, for example, to STDOUT to the terminal a microphone input
 
 ```
 pocketsphinx_continuous \
