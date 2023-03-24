@@ -47,22 +47,22 @@ Check the installation by running the command `pocketsphinx_continuous`. You may
 
 ## Using the recognizer
 
-The last step is to copy the folders in the `model` directory to where the application can find them in the folder system. All that is needed is to run the application, for example, to STDOUT to the terminal a microphone input
+The last step is to copy the folders in the `model` directory (not copying the directory) to where the application can find them in the folder system. All that is needed is to run the application, for example, to STDOUT to the terminal a microphone input
 
 ```
 pocketsphinx_continuous \
-    -hmm /usr/share/pocketsphinx/model/hmm/en_US/en-us \
-    -dict /usr/share/pocketsphinx/model/lm/cmudict-en-us.dict \
-    -lm /usr/share/pocketsphinx/model/lm/en-us.lm.bin \
+    -hmm /usr/share/pocketsphinx/hmm/en_US/en-us \
+    -dict /usr/share/pocketsphinx/lm/cmudict-en-us.dict \
+    -lm /usr/share/pocketsphinx/lm/en-us.lm.bin \
     -inmic yes
 ```
 A `model` folder has been added to this repository. You can add and subtract models to change the consistency of the application. The live microphone is pretty nice and gives good results in a quiet environment with a good microphone, however, sometimes it is convenient to process a file. Using audacity gives good results by recording in mono with a project rate of 16000Hz. Export the `wav` file encoded in a 16-bit PCM format. Then use the command
 
 ```
 pocketsphinx_continuous \
-    -hmm /usr/share/pocketsphinx/model/hmm/en_US/en-us \
-    -dict /usr/share/pocketsphinx/model/lm/cmudict-en-us.dict \
-    -lm /usr/share/pocketsphinx/model/lm/en-us.lm.bin \
+    -hmm /usr/share/pocketsphinx/hmm/en_US/en-us \
+    -dict /usr/share/pocketsphinx/lm/cmudict-en-us.dict \
+    -lm /usr/share/pocketsphinx/lm/en-us.lm.bin \
     -infile <filename>.wav
 ```
 
