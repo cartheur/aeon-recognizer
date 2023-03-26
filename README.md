@@ -1,3 +1,4 @@
+[![GitHub license](https://img.shields.io/github/license/cartheur/aeon-recognizer)](https://github.com/cartheur/aeon-recognizer/blob/main/LICENSE.txt)
 [![GitHub issues](https://img.shields.io/github/issues/cartheur/voice-recognizer)](https://github.com/cartheur/voice-recognizer/issues)
 
 ## A multitonality voice-recognizer for _aeon_ embidied as _david_
