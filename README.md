@@ -1,7 +1,7 @@
 [![GitHub license](https://img.shields.io/github/license/cartheur/aeon-recognizer)](https://github.com/cartheur/aeon-recognizer/blob/main/LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues/cartheur/voice-recognizer)](https://github.com/cartheur/voice-recognizer/issues)
 
-## A multi-tonality voice-recognizer for _aeon_ embddied as _henry_ and _david_
+## A multi-tonality voice-recognizer for _aeon_ -- embodied as _henry_ and _david_
 
 This project is a complete solution to having an emotional toy recognize a speaker and process their emotion via the recognition process. In order to use this software, you will need to build it from source. Before that, you will need to install some prerequisites some of which you may or may not have. The following instructions are for a Debian Linux system.
 
